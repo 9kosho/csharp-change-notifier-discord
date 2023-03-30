@@ -34,6 +34,8 @@ const timeZone = "America/Los_Angeles";
     .reduce((sum, file) => sum + file.deletions, 0);
 
   const commitTitle = commitData.commit.message.split("\n")[0];
+  const repoName = GITHUB_REPOSITORY.split("/")[1];
+  const commitDescription = commitMessage.slice(1).join("\n").trim();
 
   await fetch(DISCORD_WEBHOOK, {
     method: "POST",
@@ -41,8 +43,8 @@ const timeZone = "America/Los_Angeles";
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      content: `**${commitTitle}**\n${GITHUB_HEAD_REF}\n\n**Lines added:** +${linesAdded}\n**Lines deleted:** -${linesDeleted}\n**Date:** ${humanReadableDate}\n\n[View Commit](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA})`,
-      thread_name: `${commitTitle}`,
+      content: `${commitDescription}\n${humanReadableDate}\n\n[View Commit](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA})`,
+      thread_name: `【${repoName}】+${linesAdded} -${linesDeleted}: ${commitTitle}`,
     }),
   });
 })();
