@@ -2,20 +2,20 @@
 
 # Fetch commit information using GitHub API
 commit_date=$(curl --silent --location --header "Authorization: token $GITHUB_TOKEN" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}" |
-    jq -r '.commit.committer.date')
+  "https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}" |
+  jq -r '.commit.committer.date')
 human_readable_date=$(TZ="America/Los_Angeles" date -d"$commit_date" +"%B %d, %Y %I:%M %p %Z")
 lines_added=$(curl --silent --location --header "Authorization: token $GITHUB_TOKEN" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}" |
-    jq -r '.files | map(select(.filename | test(".cs$"))) | map(.additions) | add')
+  "https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}" |
+  jq -r '.files | map(select(.filename | test(".cs$"))) | map(.additions) | add')
 lines_deleted=$(curl --silent --location --header "Authorization: token $GITHUB_TOKEN" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}" |
-    jq -r '.files | map(select(.filename | test(".cs$"))) | map(.deletions) | add')
+  "https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}" |
+  jq -r '.files | map(select(.filename | test(".cs$"))) | map(.deletions) | add')
 
 # Send Discord notification
 curl --silent --location --request POST "$DISCORD_WEBHOOK" \
-    --header 'Content-Type: application/json' \
-    --data-raw "{
+  --header 'Content-Type: application/json' \
+  --data-raw "{
     \"content\": \"\",
     \"embeds\": [
       {
