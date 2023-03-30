@@ -38,6 +38,13 @@ const timeZone = "America/Los_Angeles";
   const commitDescription = commitMessage.slice(1).join("\n").trim();
   const repoName = GITHUB_REPOSITORY.split("/")[1];
 
+  const forumTag = {
+    name: "example-tag",
+    moderated: false,
+    emoji_id: null,
+    emoji_name: "shield",
+  };
+
   await fetch(DISCORD_WEBHOOK, {
     method: "POST",
     headers: {
@@ -46,6 +53,21 @@ const timeZone = "America/Los_Angeles";
     body: JSON.stringify({
       thread_name: `${repoName}【+${linesAdded}, -${linesDeleted}】${commitTitle}`,
       content: `${commitDescription}\n---\n${humanReadableDate}\n\n[View Commit](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA})`,
+      components: [
+        {
+          type: 1, // Action row
+          components: [
+            {
+              type: 2, // Button
+              label: forumTag.name,
+              emoji: {
+                id: forumTag.emoji_id,
+                name: forumTag.emoji_name,
+              },
+            },
+          ],
+        },
+      ],
     }),
   });
 })();
