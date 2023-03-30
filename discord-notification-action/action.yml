@@ -1,0 +1,19 @@
+name: "Discord Notification"
+description: "Send a Discord notification for new commits on C# files"
+inputs:
+    GITHUB_TOKEN:
+        description: "GitHub token"
+        required: true
+    DISCORD_WEBHOOK:
+        description: "Discord webhook URL"
+        required: true
+runs:
+    using: "composite"
+    steps:
+        - run: chmod +x ${{ github.action_path }}/main.sh
+          shell: bash
+        - run: ${{ github.action_path }}/main.sh
+          shell: bash
+          env:
+              GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+              DISCORD_WEBHOOK: ${{ inputs.DISCORD_WEBHOOK }}
