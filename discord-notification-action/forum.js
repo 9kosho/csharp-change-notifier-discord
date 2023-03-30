@@ -33,9 +33,10 @@ const timeZone = "America/Los_Angeles";
     .filter((file) => file.filename.endsWith(".cs"))
     .reduce((sum, file) => sum + file.deletions, 0);
 
-  const commitTitle = commitData.commit.message.split("\n")[0];
-  const repoName = GITHUB_REPOSITORY.split("/")[1];
+  const commitMessage = commitData.commit.message.split("\n");
+  const commitTitle = commitMessage[0];
   const commitDescription = commitMessage.slice(1).join("\n").trim();
+  const repoName = GITHUB_REPOSITORY.split("/")[1];
 
   await fetch(DISCORD_WEBHOOK, {
     method: "POST",
