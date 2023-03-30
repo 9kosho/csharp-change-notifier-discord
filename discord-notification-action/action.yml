@@ -15,8 +15,10 @@ runs:
       with:
         node-version: "16"
     - run: npm ci
+      shell: bash
       working-directory: ${{ github.action_path }}
     - run: node ${{ github.action_path }}/main.js
+      shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         DISCORD_WEBHOOK: ${{ inputs.DISCORD_WEBHOOK }}
