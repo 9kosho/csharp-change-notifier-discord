@@ -44,8 +44,8 @@ const timeZone = "America/Los_Angeles";
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      content: `${commitDescription}\n${humanReadableDate}\n\n[View Commit](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA})`,
       thread_name: `${repoName}【+${linesAdded}, -${linesDeleted}】${commitTitle}`,
+      content: `${commitDescription}\n---\n${humanReadableDate}\n\n[View Commit](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA})`,
     }),
   });
 })();
